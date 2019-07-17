@@ -143,14 +143,34 @@ $(document).ready(function () {
    * ブロックを右に移動
    */
   function moveRight() {
-    // 
+    for (let row = 0; row < ROW; row++) {
+      for (let col = COL - 1; col >= 0; col--) {
+        if (cells[row][col].blockNum === fallingBlockNum) {
+          $(cells[row][col + 1]).attr("class", $(cells[row][col]).attr("class"))
+          $(cells[row][col]).removeClass()
+
+          cells[row][col + 1].blockNum = cells[row][col].blockNum
+          cells[row][col].blockNum = null
+        }
+      }
+    }
   }
 
   /**
    * ブロックを左に移動
    */
   function moveLeft() {
-    // 
+    for (let row = 0; row < ROW; row++) {
+      for (let col = 0; col < COL; col++) {
+        if (cells[row][col].blockNum === fallingBlockNum) {
+          $(cells[row][col - 1]).attr("class", $(cells[row][col]).attr("class"))
+          $(cells[row][col]).removeClass()
+
+          cells[row][col - 1].blockNum = cells[row][col].blockNum
+          cells[row][col].blockNum = null
+        }
+      }
+    }
   }
 
   /**
@@ -159,4 +179,15 @@ $(document).ready(function () {
   function deleteRow() {
     // 
   }
+
+  /**
+   * キーボード入力時
+   */
+  $(document).keydown(function(e) {
+    if (e.keyCode === 37) {
+      moveLeft()
+    } else if (e.keyCode === 39) {
+      moveRight()
+    }
+  })
 })
