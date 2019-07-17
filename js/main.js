@@ -177,7 +177,35 @@ $(document).ready(function () {
    * 行削除実行
    */
   function deleteRow() {
-    // 
+    for (let row = ROW - 1; row >= 0; row--) {
+      // 削除可能フラグ
+      let deleteable = true
+
+      for (let col = 0; col < COL; col++) {
+        // 行がそろっていない場合
+        if (! $(cells[row][col]).attr("class")) {
+          deleteable = false
+          break
+        }
+      }
+
+      if (deleteable) {
+        // 行削除実行
+        for (let col = 0; col < COL; col++) {
+          $(cells[row][col]).removeClass()
+        }
+        // 全ての行を1つずつ下にずらす
+        for (let downRow = row - 1; downRow >= 0; downRow--) {
+          for (let col = 0; col < COL; col++) {
+            $(cells[downRow + 1][col]).attr("class", $(cells[downRow][col]).attr("class"))
+            $(cells[downRow][col]).removeClass()
+
+            cells[downRow + 1][col].blockNum = cells[downRow][col].blockNum
+            cells[downRow][col].blockNum = null
+          }
+        }
+      }
+    }
   }
 
   /**
