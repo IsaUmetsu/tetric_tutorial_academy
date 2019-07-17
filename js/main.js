@@ -11,7 +11,13 @@ $(document).ready(function () {
     count++
     $("#hello_text").html("はじめてのjavascript(" + count + ")")
 
-    fallBlocks()
+    // 落下中のブロック確認
+    if (hasFallingBlock()) {
+      fallBlocks() // 落下継続
+    } else {
+      deleteRow()     // 行がそろっていれば消す
+      generateBlock() // ランダムでブロック生成
+    }
   }, 1000)
 
   /**
@@ -50,5 +56,40 @@ $(document).ready(function () {
         }
       }
     }
+  }
+
+  /**
+   * 落下中のブロック有無判定
+   */
+  function hasFallingBlock() {
+    return true
+  }
+
+  /**
+   * ランダムにブロック生成
+   */
+  function generateBlock() {
+    // 
+  }
+
+  /**
+   * ブロックを右に移動
+   */
+  function moveRight() {
+    // 
+  }
+
+  /**
+   * ブロックを左に移動
+   */
+  function moveLeft() {
+    // 
+  }
+
+  /**
+   * 行削除実行
+   */
+  function deleteRow() {
+    // 
   }
 })
