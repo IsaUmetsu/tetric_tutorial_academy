@@ -43,8 +43,11 @@ $(document).ready(function () {
   function fallBlocks() {
     // 底についていないか確認
     for (let col = 0; col < COL; col++) {
-      // 一番下の行を全削除
-      $(cells[ROW - 1][col]).removeClass()
+      // 一番下にブロックがある場合、これ以上落とさない
+      if ($(cells[ROW - 1][col]).attr("class")) {
+        isFalling = false
+        return
+      }
     }
 
     // 1行ずつ落下処理
@@ -58,11 +61,12 @@ $(document).ready(function () {
     }
   }
 
+  let isFalling = true
   /**
    * 落下中のブロック有無判定
    */
   function hasFallingBlock() {
-    return true
+    return isFalling
   }
 
   /**
