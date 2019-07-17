@@ -6,6 +6,16 @@ $(document).ready(function () {
   let count = 0
   let cells = []
 
+  let blocks = {
+    i: { class: "i", pattern: [[1, 1, 1, 1]] },
+    o: { class: "o", pattern: [[1, 1], [1, 1]] },
+    t: { class: "t", pattern: [[0, 1, 0], [1, 1, 1]] },
+    s: { class: "s", pattern: [[0, 1, 1], [1, 1, 0]] },
+    z: { class: "z", pattern: [[1, 1, 0], [0, 1, 1]] },
+    j: { class: "j", pattern: [[1, 0, 0], [1, 1, 1]] },
+    l: { class: "j", pattern: [[0, 0, 1], [1, 1, 1]] },
+  }
+
   loadTable()
   setInterval(function() {
     count++
@@ -73,7 +83,30 @@ $(document).ready(function () {
    * ランダムにブロック生成
    */
   function generateBlock() {
-    // 
+    // ブロックパターンから1つ選出
+    let nextBlock = decideNextBlock()
+
+    let nextBlockPattern = nextBlock.pattern
+    
+    // ブロック配置（左から4番目のセルへ）
+    for (let row = 0; row < nextBlockPattern.length; row++) {
+      for (let col = 0; col < nextBlockPattern[row].length; col++) {
+        if(nextBlockPattern[row][col]) {
+          $(cells[row][col + 3]).addClass(nextBlock.class)
+        }
+      }
+    }
+    // 落下中ブロックフラグをtrue
+    isFalling = true
+  }
+
+  /**
+   * ランダムブロック選出
+   */
+  function decideNextBlock() {
+    let keys = Object.keys(blocks)
+    let nextBlockKey = keys[Math.floor(Math.random() * keys.length)]
+    return blocks[nextBlockKey]
   }
 
   /**
