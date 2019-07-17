@@ -5,3 +5,24 @@ body {
 h1 {
   color: #FFFFFF;
 }
+
+table {
+  width: 400px;
+  height: 800px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+td {
+  width: 10%;
+  height: 5%;
+  background-color: #455A64;
+}
+
+.i { background-color: #00BCD4; } /* cyan */
+.o { background-color: #FFEB3B; } /* yellow */
+.t { background-color: #9C27B0; } /* purple */
+.s { background-color: #4CAF50; } /* green */
+.z { background-color: #F44336; } /* red */
+.j { background-color: #2196F3; } /* blue */
+.l { background-color: #FF9800; } /* orange */
