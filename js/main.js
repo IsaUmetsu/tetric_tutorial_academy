@@ -53,25 +53,42 @@ $(document).ready(function () {
   function fallBlocks() {
     // 底についていないか確認
     for (let col = 0; col < COL; col++) {
-      // 一番下にブロックがある場合、これ以上落とさない
-      if ($(cells[ROW - 1][col]).attr("class")) {
+      // 落下中のブロックが一番下に到達した場合、終了
+      if (cells[ROW - 1][col].blockNum === fallingBlockNum) {
         isFalling = false
         return
+      }
+    }
+
+    // 1マス下に別ブロックがないか
+    for (let row = ROW - 2; row >= 0; row--) {
+      for (let col = 0; col < COL; col++) {
+        // 落下中のブロックをフォーカス
+        if (cells[row][col].blockNum === fallingBlockNum) {
+          // 1つ下のセルのブロック種類と落下番号が違う場合 (ブロック番号も見ているのは、2行構成のブロックもあるため)
+          if ($(cells[row + 1][col]).attr("class") && cells[row + 1][col].blockNum !== fallingBlockNum) {
+            isFalling = false
+            return
+          }
+        }
       }
     }
 
     // 1行ずつ落下処理
     for (let row = ROW - 2; row >= 0; row--) {
       for (let col = 0; col < COL; col++) {
-        if ($(cells[row][col]).attr('class')) {
+        if (cells[row][col].blockNum === fallingBlockNum) { // 落下中のブロックのみ落とす
           $(cells[row + 1][col]).addClass($(cells[row][col]).attr('class'))
           $(cells[row][col]).removeClass()
+
+          cells[row + 1][col].blockNum = cells[row][col].blockNum
+          cells[row][col].blockNum = null
         }
       }
     }
   }
 
-  let isFalling = true
+  let isFalling = false
   /**
    * 落下中のブロック有無判定
    */
@@ -79,12 +96,14 @@ $(document).ready(function () {
     return isFalling
   }
 
+  let fallingBlockNum = 0
   /**
    * ランダムにブロック生成
    */
   function generateBlock() {
     // ブロックパターンから1つ選出
     let nextBlock = decideNextBlock()
+    let nextFallingBlockNum = fallingBlockNum + 1
 
     let nextBlockPattern = nextBlock.pattern
     
@@ -93,11 +112,22 @@ $(document).ready(function () {
       for (let col = 0; col < nextBlockPattern[row].length; col++) {
         if(nextBlockPattern[row][col]) {
           $(cells[row][col + 3]).addClass(nextBlock.class)
+          cells[row][col + 3].blockNum = nextFallingBlockNum
         }
       }
     }
     // 落下中ブロックフラグをtrue
     isFalling = true
+    fallingBlockNum = nextFallingBlockNum
+  }
+
+  /**
+   * ランダムブロック選出
+   */
+  function decideNextBlock() {
+    let keys = Object.keys(blocks)
+    let nextBlockKey = keys[Math.floor(Math.random() * keys.length)]
+    return blocks[nextBlockKey]
   }
 
   /**
