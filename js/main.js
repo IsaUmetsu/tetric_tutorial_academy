@@ -25,15 +25,6 @@ $(document).ready(function () {
     if (hasFallingBlock()) {
       fallBlocks() // 落下継続
     } else {
-      // ゲームオーバー判定
-      for (let row = 0; row < 2; row++) {
-        for (let col = 0; col < 10; col++) {
-          if ($(cells[row][col]).attr("class")) {
-            alert("Game Over!!")
-          }
-        }
-      }
-
       deleteRow()     // 行がそろっていれば消す
       generateBlock() // ランダムでブロック生成
     }
